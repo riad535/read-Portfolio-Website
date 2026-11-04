@@ -1,0 +1,12 @@
+**/.vs
+**/bin
+**/obj
+**/.env
+**/*.user
+**/Logs/*
+**/temp
+
+# Ignore uploaded product images
+wwwroot/images/products/*
+!wwwroot/images/products/.gitkeep
+
