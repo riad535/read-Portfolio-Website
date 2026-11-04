@@ -10,7 +10,7 @@
 | **Project Name**      | Md Read Hasan - Professional Developer Portfolio                                                |
 | **Author / Owner**    | Md Read Hasan                                                                                   |
 | **Version / Status**  | v1.1 - Draft (items marked [TBD] must be filled before implementation is considered complete) |
-| **Target Framework**  | ASP.NET Core MVC on .NET 8 (LTS), In-Memory / Static Mock Data approach                         |
+| **Target Framework**  | ASP.NET Core MVC on .NET 10 (LTS), In-Memory / Static Mock Data approach                         |
 | **Styling Framework** | Bootstrap 5 (Responsive UI)                                                                     |
 | **Data Storage**      | None (no database). All content served from an in-memory service.                               |
 
@@ -197,7 +197,7 @@ Reason: there is no database and no backend infrastructure for email. A form wou
 
 ### 8.1 Technology Choices
 
-- **Framework:** ASP.NET Core MVC, .NET 8 (LTS).
+- **Framework:** ASP.NET Core MVC, .NET 10 (LTS).
 - **UI:** Razor views, Bootstrap 5, small vanilla JavaScript file for scroll behaviour. Icons: Bootstrap Icons.
 
 - **Data:** in-memory C# objects exposed through an interface (no database).
