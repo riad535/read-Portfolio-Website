@@ -1,0 +1,16 @@
+@model List<PortfolioWebsite.Models.AchievementViewModel>
+
+<div class="row g-4 justify-content-center">
+    @foreach (var achievement in Model)
+    {
+        <div class="col-md-6 col-lg-4">
+            <article class="surface-card achievement-card h-100 text-center" data-reveal>
+                <div class="icon-box icon-box-center">
+                    <i class="bi bi-trophy" aria-hidden="true"></i>
+                </div>
+                <h3 class="achievement-title">@achievement.Title</h3>
+                <span class="achievement-year">@achievement.Year</span>
+            </article>
+        </div>
+    }
+</div>

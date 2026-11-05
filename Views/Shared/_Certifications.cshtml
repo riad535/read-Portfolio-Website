@@ -1,0 +1,33 @@
+@model PortfolioWebsite.Models.CertificationsSectionViewModel
+
+@{
+    var labels = Model.ButtonLabels;
+}
+
+<div class="row g-4">
+    @foreach (var certification in Model.Certifications)
+    {
+        var cardClass = string.IsNullOrWhiteSpace(certification.VerificationUrl)
+            ? "surface-card cert-card h-100"
+            : "surface-card cert-card card-interactive h-100";
+
+        <div class="col-md-6">
+            <article class="@cardClass" data-reveal>
+                <div class="icon-box">
+                    <i class="bi bi-patch-check" aria-hidden="true"></i>
+                </div>
+                <div class="cert-content">
+                    <h3 class="card-title-site">@certification.CourseName</h3>
+                    <p class="cert-platform">@certification.Platform</p>
+                    @if (!string.IsNullOrWhiteSpace(certification.VerificationUrl))
+                    {
+                        <a class="cert-link" href="@certification.VerificationUrl" target="_blank" rel="noopener noreferrer">
+                            @labels.ViewCertificate
+                            <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+                        </a>
+                    }
+                </div>
+            </article>
+        </div>
+    }
+</div>

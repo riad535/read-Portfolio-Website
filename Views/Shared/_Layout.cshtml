@@ -1,0 +1,105 @@
+﻿@{
+    var brandName = ViewData["BrandName"] as string;
+    var navigation = ViewData["Navigation"] as List<NavigationItemViewModel> ?? [];
+    var buttonLabels = ViewData["ButtonLabels"] as ButtonLabelsViewModel;
+    var gitHubUrl = ViewData["GitHubUrl"] as string;
+    var linkedInUrl = ViewData["LinkedInUrl"] as string;
+    var footerText = ViewData["FooterText"] as string;
+    var metaDescription = ViewData["MetaDescription"] as string;
+
+    if (!string.IsNullOrWhiteSpace(footerText))
+    {
+        footerText = footerText.Replace("{current year}", DateTime.Now.Year.ToString());
+    }
+}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    @if (!string.IsNullOrWhiteSpace(metaDescription))
+    {
+        <meta name="description" content="@metaDescription" />
+    }
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-xl site-navbar sticky-top" id="siteNavbar" aria-label="Main">
+            <div class="container">
+                @if (!string.IsNullOrWhiteSpace(brandName))
+                {
+                    <a class="navbar-brand" href="#home">
+                        <span class="brand-dot" aria-hidden="true"></span>@brandName
+                    </a>
+                }
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavigation"
+                        aria-controls="mainNavigation"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNavigation">
+                    @if (navigation.Count > 0)
+                    {
+                        <ul class="navbar-nav ms-auto">
+                            @foreach (var item in navigation)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#@item.AnchorId" data-nav-link>@item.NavbarLabel</a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main-content" class="site-main">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            @if (buttonLabels is not null && (!string.IsNullOrWhiteSpace(gitHubUrl) || !string.IsNullOrWhiteSpace(linkedInUrl)))
+            {
+                <nav class="footer-social" aria-label="Social links">
+                    @if (!string.IsNullOrWhiteSpace(gitHubUrl))
+                    {
+                        <a class="icon-button" href="@gitHubUrl" target="_blank" rel="noopener noreferrer" aria-label="@buttonLabels.GitHub">
+                            <i class="bi bi-github" aria-hidden="true"></i>
+                        </a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(linkedInUrl))
+                    {
+                        <a class="icon-button" href="@linkedInUrl" target="_blank" rel="noopener noreferrer" aria-label="@buttonLabels.LinkedIn">
+                            <i class="bi bi-linkedin" aria-hidden="true"></i>
+                        </a>
+                    }
+                </nav>
+            }
+            @if (!string.IsNullOrWhiteSpace(footerText))
+            {
+                <p class="footer-text">@footerText</p>
+            }
+        </div>
+    </footer>
+
+    <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="bi bi-arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

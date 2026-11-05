@@ -1,0 +1,53 @@
+@model PortfolioWebsite.Models.ProjectsSectionViewModel
+
+@{
+    var labels = Model.ButtonLabels;
+}
+
+<div class="row g-4">
+    @foreach (var project in Model.Projects)
+    {
+        <div class="col-lg-6">
+            <article class="surface-card project-card card-interactive h-100" data-reveal>
+                <h3 class="card-title-site">@project.Title</h3>
+                <p class="project-description">@project.Description</p>
+
+                @if (!string.IsNullOrWhiteSpace(project.TechStack))
+                {
+                    <div class="chip-list">
+                        @foreach (var technology in project.TechStack.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                        {
+                            <span class="tech-chip">@technology</span>
+                        }
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(project.Architecture))
+                {
+                    <p class="project-architecture">
+                        <i class="bi bi-diagram-3" aria-hidden="true"></i>
+                        <span>@project.Architecture</span>
+                    </p>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(project.LiveDemoUrl) || !string.IsNullOrWhiteSpace(project.GitHubUrl))
+                {
+                    <div class="project-footer">
+                        @if (!string.IsNullOrWhiteSpace(project.LiveDemoUrl))
+                        {
+                            <a class="btn btn-gradient btn-sm" href="@project.LiveDemoUrl" target="_blank" rel="noopener noreferrer">
+                                <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>@labels.LiveDemo
+                            </a>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(project.GitHubUrl))
+                        {
+                            <a class="btn btn-outline-site btn-sm" href="@project.GitHubUrl" target="_blank" rel="noopener noreferrer">
+                                <i class="bi bi-github" aria-hidden="true"></i>@labels.GitHub
+                            </a>
+                        }
+                    </div>
+                }
+            </article>
+        </div>
+    }
+</div>

@@ -41,22 +41,22 @@ These are outside the agent's control. The agent should only report if they are 
 
 **Goal:** empty page runs with navbar and footer. DI is wired.
 
-- [ ] Create project **in the repo root** (not in a sub-folder): `dotnet new mvc -n PortfolioWebsite -o . --framework net10.0`. Do not overwrite `AGENTS.md` or `docs/`.
-- [ ] Confirm `PortfolioWebsite.csproj` has `<TargetFramework>net10.0</TargetFramework>`
-- [ ] Add `.gitignore` for .NET (`bin/`, `obj/`, `.vs/`) and initialise Git
-- [ ] Confirm `AGENTS.md` and `docs/` files are still in place and untouched
-- [ ] Create folders: `Models/`, `Services/`, `wwwroot/images/`, `wwwroot/files/` (keep empty; the owner adds the assets)
-- [ ] Remove default template content (Privacy page, sample text, default styles not needed)
-- [ ] Ensure Bootstrap 5 is available; add Bootstrap Icons (PRD §8.1)
-- [ ] Build `Views/Shared/_Layout.cshtml`: meta viewport, navbar (FR-01), `<main>`, footer (FR-14)
-- [ ] Navbar links for all sections: Home, About, Education, Skills, Projects, Certifications, Experience, Achievements, Contact
-- [ ] Create `wwwroot/css/site.css` with CSS variables (colours, spacing) and `wwwroot/js/site.js` (empty for now)
-- [ ] Register in `Program.cs`: `AddControllersWithViews()` and (after Phase 2) the portfolio service
+- [x] Create project **in the repo root** (not in a sub-folder): `dotnet new mvc -n PortfolioWebsite -o . --framework net10.0`. Do not overwrite `AGENTS.md` or `docs/`.
+- [x] Confirm `PortfolioWebsite.csproj` has `<TargetFramework>net10.0</TargetFramework>`
+- [x] Add `.gitignore` for .NET (`bin/`, `obj/`, `.vs/`) and initialise Git
+- [x] Confirm `AGENTS.md` and `docs/` files are still in place and untouched
+- [x] Create folders: `Models/`, `Services/`, `wwwroot/images/`, `wwwroot/files/` (keep empty; the owner adds the assets)
+- [x] Remove default template content (Privacy page, sample text, default styles not needed)
+- [x] Ensure Bootstrap 5 is available; add Bootstrap Icons (PRD §8.1)
+- [x] Build `Views/Shared/_Layout.cshtml`: meta viewport, navbar (FR-01), `<main>`, footer (FR-14)
+- [x] Navbar links for all sections: Home, About, Education, Skills, Projects, Certifications, Experience, Achievements, Contact
+- [x] Create `wwwroot/css/site.css` with CSS variables (colours, spacing) and `wwwroot/js/site.js` (empty for now)
+- [x] Register in `Program.cs`: `AddControllersWithViews()` and (after Phase 2) the portfolio service
 
 **Verify**
-- [ ] `dotnet build` passes
-- [ ] `dotnet run` shows layout with navbar and footer, no console errors
-- [ ] Navbar collapses to hamburger on a narrow window
+- [x] `dotnet build` passes
+- [x] `dotnet run` shows layout with navbar and footer, no console errors
+- [x] Navbar collapses to hamburger on a narrow window
 
 ---
 
@@ -64,30 +64,30 @@ These are outside the agent's control. The agent should only report if they are 
 
 **Goal:** controller returns a full `PortfolioViewModel` from mock data.
 
-- [ ] Create `ProfileViewModel` (name, designation, location, phone, email, bio, GitHub URL, LinkedIn URL, photo path, CV path)
-- [ ] Create `EducationViewModel` (degree, institution, period nullable)
-- [ ] Create `SkillViewModel` (category, list of skills)
-- [ ] Create `ProjectViewModel` (title, description, tech stack, architecture, nullable `LiveDemoUrl`, nullable `GitHubUrl`)
-- [ ] Create `CertificationViewModel` (course name, platform, nullable verification URL)
-- [ ] Create `ExperienceViewModel` (role, organisation, date range, bullet points)
-- [ ] Create `AchievementViewModel` (title, year)
-- [ ] Create `PortfolioViewModel` aggregating all of the above
-- [ ] Create `IPortfolioService` with `PortfolioViewModel GetPortfolio()`
-- [ ] Implement `MockPortfolioService` with data copied **exactly** from `docs/CONTENT.md` sections 1 to 7 (and labels from sections 8 to 9)
-  - [ ] Profile and links (CONTENT §1)
-  - [ ] Education (CONTENT §2), period left null
-  - [ ] Skills, 6 categories (CONTENT §3)
-  - [ ] Projects (CONTENT §4), MaleFashion live demo set, GitHub URLs left null
-  - [ ] Certifications (CONTENT §5), second certificate URL left null
-  - [ ] Experience (CONTENT §6)
-  - [ ] Achievements (CONTENT §7)
-- [ ] Register `AddSingleton<IPortfolioService, MockPortfolioService>()` in `Program.cs`
-- [ ] Update `HomeController` to inject the service and pass `PortfolioViewModel` to `Index`
+- [x] Create `ProfileViewModel` (name, designation, location, phone, email, bio, GitHub URL, LinkedIn URL, photo path, CV path)
+- [x] Create `EducationViewModel` (degree, institution, period nullable)
+- [x] Create `SkillViewModel` (category, list of skills)
+- [x] Create `ProjectViewModel` (title, description, tech stack, architecture, nullable `LiveDemoUrl`, nullable `GitHubUrl`)
+- [x] Create `CertificationViewModel` (course name, platform, nullable verification URL)
+- [x] Create `ExperienceViewModel` (role, organisation, date range, bullet points)
+- [x] Create `AchievementViewModel` (title, year)
+- [x] Create `PortfolioViewModel` aggregating all of the above
+- [x] Create `IPortfolioService` with `PortfolioViewModel GetPortfolio()`
+- [x] Implement `MockPortfolioService` with data copied **exactly** from `docs/CONTENT.md` sections 1 to 7 (and labels from sections 8 to 9)
+  - [x] Profile and links (CONTENT §1)
+  - [x] Education (CONTENT §2), period left null
+  - [x] Skills, 6 categories (CONTENT §3)
+  - [x] Projects (CONTENT §4), MaleFashion live demo set, GitHub URLs left null
+  - [x] Certifications (CONTENT §5), second certificate URL left null
+  - [x] Experience (CONTENT §6)
+  - [x] Achievements (CONTENT §7)
+- [x] Register `AddSingleton<IPortfolioService, MockPortfolioService>()` in `Program.cs`
+- [x] Update `HomeController` to inject the service and pass `PortfolioViewModel` to `Index`
 
 **Verify**
-- [ ] `dotnet build` passes
-- [ ] Temporarily render a few model values on `Index` to confirm data flows (remove afterwards)
-- [ ] Data matches `docs/CONTENT.md` word for word; nothing invented
+- [x] `dotnet build` passes
+- [x] Temporarily render a few model values on `Index` to confirm data flows (remove afterwards)
+- [x] Data matches `docs/CONTENT.md` word for word; nothing invented
 
 ---
 
@@ -96,32 +96,32 @@ These are outside the agent's control. The agent should only report if they are 
 **Goal:** all sections render from the model. AC-01 to AC-05 pass.
 
 **Gate (check first, stop if any is missing and ask the owner):**
-- [ ] `docs/DESIGN.md` exists
-- [ ] `wwwroot/images/profile.jpg` exists
-- [ ] `wwwroot/files/ReadHasan_CV.pdf` exists (if not, continue and hide the CV button)
+- [x] `docs/DESIGN.md` exists
+- [x] `wwwroot/images/profile.jpg` exists
+- [x] `wwwroot/files/ReadHasan_CV.pdf` exists (if not, continue and hide the CV button)
 
-- [ ] `_Hero.cshtml`: photo, name, designation, tagline, buttons: Download CV, GitHub, LinkedIn (FR-03, FR-13)
-- [ ] `_About.cshtml`: bio and location (FR-04)
-- [ ] Education section partial (FR-05)
-- [ ] `_Skills.cshtml`: cards or badges grouped by category (FR-06)
-- [ ] `_Projects.cshtml`: one card per project; Live Demo and GitHub buttons only if the URL exists (FR-07)
-- [ ] `_Certifications.cshtml`: list with "View Certificate" only if the URL exists (FR-09)
-- [ ] `_Experience.cshtml`: timeline with date range and bullets (FR-10)
-- [ ] `_Achievements.cshtml`: IUPC list with year (FR-11)
-- [ ] `_Contact.cshtml`: `mailto:` link, phone, location, GitHub and LinkedIn icons; no form (FR-12, PRD §6)
-- [ ] Compose all partials in `Views/Home/Index.cshtml` in the order of PRD §4; each section has an `id`
-- [ ] `site.js`: smooth scroll to sections (FR-02), active navbar link on scroll, back-to-top button (FR-15)
-- [ ] All external links open in a new tab with `rel="noopener noreferrer"` (FR-08)
-- [ ] Graceful fallback if photo or CV file is missing
-- [ ] Responsive polish at 320, 768, 1024, 1440 px (no horizontal scroll)
-- [ ] Apply colours, fonts and style from `docs/DESIGN.md` through CSS variables in `site.css`
+- [x] `_Hero.cshtml`: photo, name, designation, tagline, buttons: Download CV, GitHub, LinkedIn (FR-03, FR-13)
+- [x] `_About.cshtml`: bio and location (FR-04)
+- [x] Education section partial (FR-05)
+- [x] `_Skills.cshtml`: cards or badges grouped by category (FR-06)
+- [x] `_Projects.cshtml`: one card per project; Live Demo and GitHub buttons only if the URL exists (FR-07)
+- [x] `_Certifications.cshtml`: list with "View Certificate" only if the URL exists (FR-09)
+- [x] `_Experience.cshtml`: timeline with date range and bullets (FR-10)
+- [x] `_Achievements.cshtml`: IUPC list with year (FR-11)
+- [x] `_Contact.cshtml`: `mailto:` link, phone, location, GitHub and LinkedIn icons; no form (FR-12, PRD §6)
+- [x] Compose all partials in `Views/Home/Index.cshtml` in the order of PRD §4; each section has an `id`
+- [x] `site.js`: smooth scroll to sections (FR-02), active navbar link on scroll, back-to-top button (FR-15)
+- [x] All external links open in a new tab with `rel="noopener noreferrer"` (FR-08)
+- [x] Graceful fallback if photo or CV file is missing
+- [x] Responsive polish at 320, 768, 1024, 1440 px (no horizontal scroll)
+- [x] Apply colours, fonts and style from `docs/DESIGN.md` through CSS variables in `site.css`
 
 **Verify**
-- [ ] AC-01: all sections render from `MockPortfolioService`; no hard-coded content in views
-- [ ] AC-02: navbar scrolls smoothly and highlights the active section
-- [ ] AC-03: layout does not break at 320 / 768 / 1024 / 1440 px
-- [ ] AC-04: external links open in new tab; Live Demo opens MaleFashion
-- [ ] AC-05: CV button downloads the PDF; GitHub and LinkedIn open the correct profiles
+- [x] AC-01: all sections render from `MockPortfolioService`; no hard-coded content in views
+- [x] AC-02: navbar scrolls smoothly and highlights the active section
+- [x] AC-03: layout does not break at 320 / 768 / 1024 / 1440 px
+- [x] AC-04: external links open in new tab; Live Demo opens MaleFashion
+- [x] AC-05: CV button downloads the PDF; GitHub and LinkedIn open the correct profiles
 
 ---
 

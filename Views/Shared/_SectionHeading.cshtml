@@ -1,0 +1,8 @@
+@model PortfolioWebsite.Models.NavigationItemViewModel
+
+@if (!string.IsNullOrWhiteSpace(Model.SectionTitle))
+{
+    <div class="section-heading">
+        <h2 id="@(Model.AnchorId + "-title")" class="section-title">@Model.SectionTitle</h2>
+    </div>
+}

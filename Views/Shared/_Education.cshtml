@@ -1,0 +1,31 @@
+@model PortfolioWebsite.Models.EducationViewModel
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <article class="surface-card education-card text-center" data-reveal>
+            <div class="icon-box icon-box-center">
+                <i class="bi bi-mortarboard" aria-hidden="true"></i>
+            </div>
+            <h3 class="education-degree">@Model.Degree</h3>
+            <p class="education-institution">@Model.Institution</p>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Period) || !string.IsNullOrWhiteSpace(Model.Cgpa))
+            {
+                <div class="education-meta">
+                    @if (!string.IsNullOrWhiteSpace(Model.Period))
+                    {
+                        <span class="education-meta-item">
+                            <i class="bi bi-calendar3" aria-hidden="true"></i>@Model.Period
+                        </span>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.Cgpa))
+                    {
+                        <span class="education-meta-item">
+                            <i class="bi bi-award" aria-hidden="true"></i><span class="visually-hidden">CGPA: </span>@Model.Cgpa
+                        </span>
+                    }
+                </div>
+            }
+        </article>
+    </div>
+</div>
