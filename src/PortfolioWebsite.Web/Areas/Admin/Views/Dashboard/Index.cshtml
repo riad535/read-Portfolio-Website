@@ -1,0 +1,37 @@
+@model DashboardSummaryDto
+
+<div class="admin-stats">
+    <a class="admin-stat-card" asp-area="Admin" asp-controller="Skills" asp-action="Index">
+        <span class="admin-stat-icon" aria-hidden="true"><i class="bi bi-lightning-charge"></i></span>
+        <span class="admin-stat-number">@Model.SkillCategoryCount</span>
+        <span class="admin-stat-label">Skill categories</span>
+    </a>
+    <a class="admin-stat-card" asp-area="Admin" asp-controller="Projects" asp-action="Index">
+        <span class="admin-stat-icon" aria-hidden="true"><i class="bi bi-folder2-open"></i></span>
+        <span class="admin-stat-number">@Model.ProjectCount</span>
+        <span class="admin-stat-label">Projects</span>
+    </a>
+    <a class="admin-stat-card" asp-area="Admin" asp-controller="Experiences" asp-action="Index">
+        <span class="admin-stat-icon" aria-hidden="true"><i class="bi bi-briefcase"></i></span>
+        <span class="admin-stat-number">@Model.ExperienceCount</span>
+        <span class="admin-stat-label">Experience</span>
+    </a>
+</div>
+
+<section class="admin-card admin-quick-actions" aria-labelledby="quick-actions-title">
+    <h2 class="admin-card-title" id="quick-actions-title">Quick actions</h2>
+    <div class="admin-actions">
+        <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Skills" asp-action="Create">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            <span>Add skill category</span>
+        </a>
+        <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Projects" asp-action="Create">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            <span>Add project</span>
+        </a>
+        <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Experiences" asp-action="Create">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            <span>Add experience</span>
+        </a>
+    </div>
+</section>

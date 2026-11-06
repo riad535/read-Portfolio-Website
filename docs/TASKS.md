@@ -271,25 +271,25 @@ These are outside the agent's control. The agent should only report if they are 
 
 **Gate:** `Admin:Email` and `Admin:Password` exist in user-secrets (see owner checklist). If missing, stop and ask.
 
-- [ ] Configure Identity (`AddIdentity<IdentityUser, IdentityRole>` + EF stores, no Identity UI package): password min 10 with upper, lower, digit; lockout 5 attempts / 15 minutes; unique email
-- [ ] Cookie settings: `HttpOnly`, `Secure`, `SameSite=Lax`, 8-hour sliding expiration, login path `/admin/login`
-- [ ] Extend `DbSeeder`: create the admin user from `Admin:Email` / `Admin:Password` **only if no user exists**; never log the password
-- [ ] Add global `AutoValidateAntiforgeryTokenAttribute`
-- [ ] Add built-in rate limiter: login POST max 10 requests per minute per IP
-- [ ] Admin area: `Areas/Admin` with base controller `[Area("Admin")] [Authorize]`
-- [ ] `AccountController`: `GET/POST /admin/login` (generic error "Invalid email or password"; local return URL only), `POST /admin/logout`
-- [ ] `DashboardController` at `/admin`: counts via `GetDashboardSummary`, quick links to Skills, Projects, Experience
-- [ ] Admin layout `_AdminLayout.cshtml` with sidebar, topbar, flash message area (TempData), per `DESIGN.md §14`; `wwwroot/css/admin.css` and `wwwroot/js/admin.js`
-- [ ] Admin pages include `<meta name="robots" content="noindex, nofollow">`
-- [ ] Sidebar: Dashboard, Skills, Projects, Experience, View Site (new tab), Logout. Skills/Projects/Experience links may show a "coming soon" page until Phase 8
-- [ ] No link to `/admin` anywhere on the public site
+- [x] Configure Identity (`AddIdentity<IdentityUser, IdentityRole>` + EF stores, no Identity UI package): password min 10 with upper, lower, digit; lockout 5 attempts / 15 minutes; unique email
+- [x] Cookie settings: `HttpOnly`, `Secure`, `SameSite=Lax`, 8-hour sliding expiration, login path `/admin/login`
+- [x] Extend `DbSeeder`: create the admin user from `Admin:Email` / `Admin:Password` **only if no user exists**; never log the password
+- [x] Add global `AutoValidateAntiforgeryTokenAttribute`
+- [x] Add built-in rate limiter: login POST max 10 requests per minute per IP
+- [x] Admin area: `Areas/Admin` with base controller `[Area("Admin")] [Authorize]`
+- [x] `AccountController`: `GET/POST /admin/login` (generic error "Invalid email or password"; local return URL only), `POST /admin/logout`
+- [x] `DashboardController` at `/admin`: counts via `GetDashboardSummary`, quick links to Skills, Projects, Experience
+- [x] Admin layout `_AdminLayout.cshtml` with sidebar, topbar, flash message area (TempData), per `DESIGN.md §14`; `wwwroot/css/admin.css` and `wwwroot/js/admin.js`
+- [x] Admin pages include `<meta name="robots" content="noindex, nofollow">`
+- [x] Sidebar: Dashboard, Skills, Projects, Experience, View Site (new tab), Logout. Skills/Projects/Experience links may show a "coming soon" page until Phase 8
+- [x] No link to `/admin` anywhere on the public site
 
 **Verify**
-- [ ] AC-12: opening `/admin` while logged out redirects to `/admin/login`
+- [x] AC-12: opening `/admin` while logged out redirects to `/admin/login`
 - [ ] AC-13: wrong password shows the generic error; 5 wrong attempts lock the account
 - [ ] Correct login reaches the dashboard; logout returns to login and `/admin` is protected again
-- [ ] A POST without anti-forgery token is rejected
-- [ ] Admin password is not present in any tracked file (`git grep`)
+- [x] A POST without anti-forgery token is rejected
+- [x] Admin password is not present in any tracked file (`git grep`)
 - [ ] Admin layout is usable at 360 px and 1440 px
 
 ---
@@ -299,29 +299,29 @@ These are outside the agent's control. The agent should only report if they are 
 **Goal:** the owner manages the three sections from the admin panel. (AC-14 to AC-18)
 
 **Common (all three sections)**
-- [ ] List page: table in a card, "Add new" button, Edit and Delete actions, empty state (per `DESIGN.md §14`)
-- [ ] Create and Edit forms with server-side validation; show errors next to fields; keep entered values on error
-- [ ] Controllers map `ValidationException` to `ModelState`, `NotFoundException` to the 404 page
-- [ ] Delete is a POST action with a confirmation modal (`DESIGN.md §14`)
-- [ ] Flash messages after create, update, delete
-- [ ] Changes appear on the public site immediately (no caching)
-- [ ] Admin form models live in `Areas/Admin/Models` and map **manually** to commands and DTOs
+- [x] List page: table in a card, "Add new" button, Edit and Delete actions, empty state (per `DESIGN.md §14`)
+- [x] Create and Edit forms with server-side validation; show errors next to fields; keep entered values on error
+- [x] Controllers map `ValidationException` to `ModelState`, `NotFoundException` to the 404 page
+- [x] Delete is a POST action with a confirmation modal (`DESIGN.md §14`)
+- [x] Flash messages after create, update, delete
+- [x] Changes appear on the public site immediately (no caching)
+- [x] Admin form models live in `Areas/Admin/Models` and map **manually** to commands and DTOs
 
 **Skills** (`/admin/skills`)
-- [ ] List shows name, icon, number of skills, display order
-- [ ] Form: name, icon (dropdown of `AllowedIcons`), display order, skills textarea (one per line)
-- [ ] Edit pre-fills the skills textarea from existing items
+- [x] List shows name, icon, number of skills, display order
+- [x] Form: name, icon (dropdown of `AllowedIcons`), display order, skills textarea (one per line)
+- [x] Edit pre-fills the skills textarea from existing items
 
 **Projects** (`/admin/projects`)
-- [ ] List shows title, display order, status badge (Published / Draft)
-- [ ] Form: title, description, tech stack (comma-separated), architecture, live demo URL, GitHub URL, display order, published checkbox
-- [ ] Quick publish/unpublish toggle in the list (POST)
+- [x] List shows title, display order, status badge (Published / Draft)
+- [x] Form: title, description, tech stack (comma-separated), architecture, live demo URL, GitHub URL, display order, published checkbox
+- [x] Quick publish/unpublish toggle in the list (POST)
 
 **Experiences** (`/admin/experiences`)
-- [ ] List shows role, organisation, date range text, status badge
-- [ ] Form: role, organisation, start month, end month, "current role" checkbox (disables end month), points textarea (one per line), published checkbox
-- [ ] Month inputs (`type="month"`) map to the first day of the month
-- [ ] Quick publish/unpublish toggle in the list (POST)
+- [x] List shows role, organisation, date range text, status badge
+- [x] Form: role, organisation, start month, end month, "current role" checkbox (disables end month), points textarea (one per line), published checkbox
+- [x] Month inputs (`type="month"`) map to the first day of the month
+- [x] Quick publish/unpublish toggle in the list (POST)
 
 **Optional (Should)**
 - [ ] Up/down buttons to change display order in Skills and Projects lists (FR-A14)

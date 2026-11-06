@@ -1,0 +1,24 @@
+<div class="modal fade admin-modal" id="deleteModal" tabindex="-1"
+     aria-labelledby="deleteModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="deleteModalTitle">Delete item?</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="admin-modal-text">
+                    Delete <strong data-delete-name></strong>? This cannot be undone.
+                </p>
+                <p class="admin-modal-warning" data-delete-warning hidden></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="admin-btn admin-btn-outline" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" data-delete-form class="admin-toggle-form" asp-antiforgery="false">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="admin-btn admin-btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

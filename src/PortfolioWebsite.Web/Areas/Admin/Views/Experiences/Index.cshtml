@@ -1,0 +1,85 @@
+@model IReadOnlyList<ExperienceListItemDto>
+@{
+    ViewData["Title"] = "Experience";
+}
+
+<div class="admin-page-header">
+    <h2 class="admin-section-title">All experience</h2>
+    <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Experiences" asp-action="Create">
+        <i class="bi bi-plus-lg" aria-hidden="true"></i>
+        <span>Add new</span>
+    </a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <section class="admin-card admin-empty">
+        <i class="bi bi-briefcase admin-empty-icon" aria-hidden="true"></i>
+        <p class="admin-empty-text">No items yet.</p>
+        <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Experiences" asp-action="Create">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            <span>Add new</span>
+        </a>
+    </section>
+}
+else
+{
+    <section class="admin-card admin-table-card">
+        <div class="admin-table-scroll">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Role</th>
+                        <th scope="col">Organisation</th>
+                        <th scope="col">Period</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="admin-table-actions-heading">
+                            <span class="visually-hidden">Actions</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var experience in Model)
+                    {
+                        <tr>
+                            <th scope="row" class="admin-table-name">@experience.Role</th>
+                            <td>@experience.Organisation</td>
+                            <td class="admin-mono admin-nowrap">@experience.DateRangeText</td>
+                            <td>
+                                <form method="post"
+                                      action="@Url.Action("SetPublished", "Experiences", new { area = "Admin", id = experience.Id })"
+                                      class="admin-toggle-form" asp-antiforgery="false">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="isPublished" value="@((!experience.IsPublished) ? "true" : "false")" />
+                                    <button type="submit"
+                                            class="admin-badge @(experience.IsPublished ? "admin-badge--success" : "admin-badge--draft")"
+                                            aria-label="@(experience.IsPublished ? "Unpublish" : "Publish") @experience.Role at @experience.Organisation"
+                                            title="@(experience.IsPublished ? "Unpublish" : "Publish")">
+                                        @(experience.IsPublished ? "Published" : "Draft")
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="admin-table-actions">
+                                <a class="admin-icon-btn"
+                                   asp-area="Admin" asp-controller="Experiences" asp-action="Edit" asp-route-id="@experience.Id"
+                                   aria-label="Edit @experience.Role at @experience.Organisation" title="Edit">
+                                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                                </a>
+                                <button type="button"
+                                        class="admin-icon-btn admin-icon-btn--danger js-delete-trigger"
+                                        data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                        data-delete-url="@Url.Action("Delete", "Experiences", new { area = "Admin", id = experience.Id })"
+                                        data-delete-name="@experience.Role at @experience.Organisation"
+                                        aria-label="Delete @experience.Role at @experience.Organisation" title="Delete">
+                                    <i class="bi bi-trash" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <partial name="_DeleteModal" />
+}

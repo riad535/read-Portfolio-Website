@@ -1,0 +1,78 @@
+@model IReadOnlyList<SkillCategoryListItemDto>
+@{
+    ViewData["Title"] = "Skills";
+}
+
+<div class="admin-page-header">
+    <h2 class="admin-section-title">Skill categories</h2>
+    <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Skills" asp-action="Create">
+        <i class="bi bi-plus-lg" aria-hidden="true"></i>
+        <span>Add new</span>
+    </a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <section class="admin-card admin-empty">
+        <i class="bi bi-lightning-charge admin-empty-icon" aria-hidden="true"></i>
+        <p class="admin-empty-text">No items yet.</p>
+        <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Skills" asp-action="Create">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            <span>Add new</span>
+        </a>
+    </section>
+}
+else
+{
+    <section class="admin-card admin-table-card">
+        <div class="admin-table-scroll">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Icon</th>
+                        <th scope="col">Skills</th>
+                        <th scope="col">Order</th>
+                        <th scope="col" class="admin-table-actions-heading">
+                            <span class="visually-hidden">Actions</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var category in Model)
+                    {
+                        <tr>
+                            <th scope="row" class="admin-table-name">@category.Name</th>
+                            <td>
+                                <span class="admin-icon-preview">
+                                    <i class="bi @category.IconClass" aria-hidden="true"></i>
+                                    <span class="admin-mono">@category.IconClass</span>
+                                </span>
+                            </td>
+                            <td>@category.SkillCount</td>
+                            <td class="admin-mono">@category.DisplayOrder</td>
+                            <td class="admin-table-actions">
+                                <a class="admin-icon-btn"
+                                   asp-area="Admin" asp-controller="Skills" asp-action="Edit" asp-route-id="@category.Id"
+                                   aria-label="Edit @category.Name" title="Edit">
+                                    <i class="bi bi-pencil" aria-hidden="true"></i>
+                                </a>
+                                <button type="button"
+                                        class="admin-icon-btn admin-icon-btn--danger js-delete-trigger"
+                                        data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                        data-delete-url="@Url.Action("Delete", "Skills", new { area = "Admin", id = category.Id })"
+                                        data-delete-name="@category.Name"
+                                        data-delete-warning="Its skills will be deleted too."
+                                        aria-label="Delete @category.Name" title="Delete">
+                                    <i class="bi bi-trash" aria-hidden="true"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <partial name="_DeleteModal" />
+}

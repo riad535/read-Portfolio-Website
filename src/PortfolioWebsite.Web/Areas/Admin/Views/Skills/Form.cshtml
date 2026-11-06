@@ -1,0 +1,64 @@
+@model SkillCategoryFormModel
+@{
+    var formActionUrl = ViewData["FormActionUrl"] as string;
+    var cancelUrl = ViewData["CancelUrl"] as string;
+}
+
+<section class="admin-card admin-form-card">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert admin-alert admin-alert--danger admin-validation-summary" role="alert">
+            <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+            <div>
+                <p class="admin-alert-title">Could not save. Please fix the errors below.</p>
+                <div asp-validation-summary="ModelOnly"></div>
+            </div>
+        </div>
+    }
+
+    <form method="post" action="@formActionUrl" class="admin-form" asp-antiforgery="false">
+        @Html.AntiForgeryToken()
+
+        <div class="admin-field">
+            <label class="admin-label" asp-for="Name">Name</label>
+            <input class="admin-input" asp-for="Name" maxlength="100" autocomplete="off"
+                   aria-describedby="Name-error" />
+            <span class="admin-field-error" asp-validation-for="Name" id="Name-error"></span>
+        </div>
+
+        <div class="admin-form-row">
+            <div class="admin-field">
+                <label class="admin-label" asp-for="IconClass">Icon</label>
+                <select class="admin-input admin-select" asp-for="IconClass"
+                        aria-describedby="IconClass-error">
+                    <option value="">Select an icon</option>
+                    @foreach (var icon in AllowedIcons.All)
+                    {
+                        <option value="@icon">@icon</option>
+                    }
+                </select>
+                <span class="admin-field-error" asp-validation-for="IconClass" id="IconClass-error"></span>
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="DisplayOrder">Display order</label>
+                <input class="admin-input" asp-for="DisplayOrder" type="number" min="0" step="1"
+                       inputmode="numeric" aria-describedby="DisplayOrder-error" />
+                <span class="admin-field-error" asp-validation-for="DisplayOrder" id="DisplayOrder-error"></span>
+            </div>
+        </div>
+
+        <div class="admin-field">
+            <label class="admin-label" asp-for="Skills">Skills</label>
+            <textarea class="admin-input admin-textarea" asp-for="Skills" rows="6"
+                      aria-describedby="Skills-help Skills-error"></textarea>
+            <p class="admin-help" id="Skills-help">One per line.</p>
+            <span class="admin-field-error" asp-validation-for="Skills" id="Skills-error"></span>
+        </div>
+
+        <div class="admin-form-actions">
+            <button type="submit" class="admin-btn admin-btn-primary">Save</button>
+            <a class="admin-btn admin-btn-outline" href="@cancelUrl">Cancel</a>
+        </div>
+    </form>
+</section>

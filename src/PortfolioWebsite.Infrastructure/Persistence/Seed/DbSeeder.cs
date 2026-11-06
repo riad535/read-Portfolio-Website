@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using PortfolioWebsite.Domain.Entities;
 using PortfolioWebsite.Infrastructure.Persistence;
 
@@ -7,10 +10,20 @@ namespace PortfolioWebsite.Infrastructure.Persistence.Seed;
 public class DbSeeder
 {
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<IdentityUser> _userManager;
+    private readonly IConfiguration _configuration;
+    private readonly ILogger<DbSeeder> _logger;
 
-    public DbSeeder(ApplicationDbContext context)
+    public DbSeeder(
+        ApplicationDbContext context,
+        UserManager<IdentityUser> userManager,
+        IConfiguration configuration,
+        ILogger<DbSeeder> logger)
     {
         _context = context;
+        _userManager = userManager;
+        _configuration = configuration;
+        _logger = logger;
     }
 
     public async Task SeedAsync(CancellationToken cancellationToken = default)
@@ -18,6 +31,44 @@ public class DbSeeder
         await SeedSkillCategoriesAsync(cancellationToken);
         await SeedProjectsAsync(cancellationToken);
         await SeedExperiencesAsync(cancellationToken);
+        await SeedAdminUserAsync(cancellationToken);
+    }
+
+    private async Task SeedAdminUserAsync(CancellationToken cancellationToken)
+    {
+        var email = _configuration["Admin:Email"];
+        var password = _configuration["Admin:Password"];
+
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            _logger.LogWarning(
+                "Admin user was not seeded because Admin:Email or Admin:Password is not configured.");
+            return;
+        }
+
+        if (await _userManager.Users.AnyAsync(cancellationToken))
+        {
+            return;
+        }
+
+        var admin = new IdentityUser
+        {
+            UserName = email.Trim(),
+            Email = email.Trim(),
+            EmailConfirmed = true,
+            LockoutEnabled = true
+        };
+
+        var result = await _userManager.CreateAsync(admin, password);
+
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(
+                "; ",
+                result.Errors.Select(error => $"{error.Code}: {error.Description}"));
+
+            _logger.LogError("Admin user creation failed: {Errors}", errors);
+        }
     }
 
     private async Task SeedSkillCategoriesAsync(CancellationToken cancellationToken)

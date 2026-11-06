@@ -1,0 +1,34 @@
+@model LoginViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LoginLayout.cshtml";
+    ViewData["Title"] = "Admin Login";
+    var hasModelError = ViewData.ModelState[string.Empty]?.Errors.Count > 0;
+}
+
+<h1 class="admin-login-title">Admin Login</h1>
+
+<form asp-area="Admin" asp-controller="Account" asp-action="Login" method="post" class="admin-form">
+    <input type="hidden" asp-for="ReturnUrl" />
+
+    @if (hasModelError)
+    {
+        <div class="alert admin-alert admin-alert--danger" role="alert">
+            <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+            <div asp-validation-summary="ModelOnly" class="admin-validation-summary"></div>
+        </div>
+    }
+
+    <div class="admin-field">
+        <label asp-for="Email" class="admin-label"></label>
+        <input asp-for="Email" class="admin-input" autocomplete="username" />
+        <span asp-validation-for="Email" class="admin-field-error"></span>
+    </div>
+
+    <div class="admin-field">
+        <label asp-for="Password" class="admin-label"></label>
+        <input asp-for="Password" class="admin-input" autocomplete="current-password" />
+        <span asp-validation-for="Password" class="admin-field-error"></span>
+    </div>
+
+    <button type="submit" class="admin-btn admin-btn-primary admin-btn-block">Sign in</button>
+</form>

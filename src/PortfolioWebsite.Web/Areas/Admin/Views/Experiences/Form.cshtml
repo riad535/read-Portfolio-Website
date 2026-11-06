@@ -1,0 +1,81 @@
+@model ExperienceFormModel
+@{
+    var formActionUrl = ViewData["FormActionUrl"] as string;
+    var cancelUrl = ViewData["CancelUrl"] as string;
+}
+
+<section class="admin-card admin-form-card">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert admin-alert admin-alert--danger admin-validation-summary" role="alert">
+            <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+            <div>
+                <p class="admin-alert-title">Could not save. Please fix the errors below.</p>
+                <div asp-validation-summary="ModelOnly"></div>
+            </div>
+        </div>
+    }
+
+    <form method="post" action="@formActionUrl" class="admin-form" asp-antiforgery="false">
+        @Html.AntiForgeryToken()
+
+        <div class="admin-field">
+            <label class="admin-label" asp-for="Role">Role</label>
+            <input class="admin-input" asp-for="Role" maxlength="150" autocomplete="off"
+                   aria-describedby="Role-error" />
+            <span class="admin-field-error" asp-validation-for="Role" id="Role-error"></span>
+        </div>
+
+        <div class="admin-field">
+            <label class="admin-label" asp-for="Organisation">Organisation</label>
+            <input class="admin-input" asp-for="Organisation" maxlength="150" autocomplete="off"
+                   aria-describedby="Organisation-error" />
+            <span class="admin-field-error" asp-validation-for="Organisation" id="Organisation-error"></span>
+        </div>
+
+        <div class="admin-form-row">
+            <div class="admin-field">
+                <label class="admin-label" asp-for="StartDate">Start month</label>
+                <input class="admin-input" asp-for="StartDate" type="month"
+                       aria-describedby="StartDate-error" />
+                <span class="admin-field-error" asp-validation-for="StartDate" id="StartDate-error"></span>
+            </div>
+
+            <div class="admin-field">
+                <label class="admin-label" asp-for="EndDate">End month</label>
+                <input class="admin-input" asp-for="EndDate" type="month"
+                       aria-describedby="EndDate-error" />
+                <span class="admin-field-error" asp-validation-for="EndDate" id="EndDate-error"></span>
+            </div>
+        </div>
+
+        <div class="admin-field admin-field--check">
+            <div class="admin-check">
+                <input class="admin-checkbox" asp-for="IsCurrent" aria-describedby="IsCurrent-help" />
+                <label class="admin-check-label" asp-for="IsCurrent">Current role</label>
+            </div>
+            <p class="admin-help" id="IsCurrent-help">The end month is ignored and shown as Present.</p>
+        </div>
+
+        <div class="admin-field">
+            <label class="admin-label" asp-for="Points">Points</label>
+            <textarea class="admin-input admin-textarea" asp-for="Points" rows="6"
+                      aria-describedby="Points-help Points-error"></textarea>
+            <p class="admin-help" id="Points-help">One per line.</p>
+            <span class="admin-field-error" asp-validation-for="Points" id="Points-error"></span>
+        </div>
+
+        <div class="admin-field admin-field--check">
+            <div class="admin-check">
+                <input class="admin-checkbox" asp-for="IsPublished" aria-describedby="IsPublished-help" />
+                <label class="admin-check-label" asp-for="IsPublished">Published</label>
+            </div>
+            <p class="admin-help" id="IsPublished-help">Visible on the public site.</p>
+        </div>
+
+        <div class="admin-form-actions">
+            <button type="submit" class="admin-btn admin-btn-primary">Save</button>
+            <a class="admin-btn admin-btn-outline" href="@cancelUrl">Cancel</a>
+        </div>
+    </form>
+</section>

@@ -1,0 +1,89 @@
+@model ProjectFormModel
+@{
+    var formActionUrl = ViewData["FormActionUrl"] as string;
+    var cancelUrl = ViewData["CancelUrl"] as string;
+}
+
+<section class="admin-card admin-form-card">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert admin-alert admin-alert--danger admin-validation-summary" role="alert">
+            <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+            <div>
+                <p class="admin-alert-title">Could not save. Please fix the errors below.</p>
+                <div asp-validation-summary="ModelOnly"></div>
+            </div>
+        </div>
+    }
+
+    <form method="post" action="@formActionUrl" class="admin-form" asp-antiforgery="false">
+        @Html.AntiForgeryToken()
+
+        <div class="admin-field">
+            <label class="admin-label" asp-for="Title">Title</label>
+            <input class="admin-input" asp-for="Title" maxlength="150" autocomplete="off"
+                   aria-describedby="Title-error" />
+            <span class="admin-field-error" asp-validation-for="Title" id="Title-error"></span>
+        </div>
+
+        <div class="admin-field">
+            <label class="admin-label" asp-for="Description">Description</label>
+            <textarea class="admin-input admin-textarea" asp-for="Description" rows="5"
+                      aria-describedby="Description-error"></textarea>
+            <span class="admin-field-error" asp-validation-for="Description" id="Description-error"></span>
+        </div>
+
+        <div class="admin-field">
+            <label class="admin-label" asp-for="TechStack">Tech stack</label>
+            <input class="admin-input" asp-for="TechStack" maxlength="300" autocomplete="off"
+                   aria-describedby="TechStack-help TechStack-error" />
+            <p class="admin-help" id="TechStack-help">Separate with commas.</p>
+            <span class="admin-field-error" asp-validation-for="TechStack" id="TechStack-error"></span>
+        </div>
+
+        <div class="admin-field">
+            <label class="admin-label" asp-for="Architecture">Architecture</label>
+            <input class="admin-input" asp-for="Architecture" maxlength="300" autocomplete="off"
+                   aria-describedby="Architecture-error" />
+            <span class="admin-field-error" asp-validation-for="Architecture" id="Architecture-error"></span>
+        </div>
+
+        <div class="admin-field">
+            <label class="admin-label" asp-for="LiveDemoUrl">Live demo URL</label>
+            <input class="admin-input" asp-for="LiveDemoUrl" type="url" maxlength="500"
+                   placeholder="https://" autocomplete="off"
+                   aria-describedby="LiveDemoUrl-error" />
+            <span class="admin-field-error" asp-validation-for="LiveDemoUrl" id="LiveDemoUrl-error"></span>
+        </div>
+
+        <div class="admin-field">
+            <label class="admin-label" asp-for="GitHubUrl">GitHub URL</label>
+            <input class="admin-input" asp-for="GitHubUrl" type="url" maxlength="500"
+                   placeholder="https://" autocomplete="off"
+                   aria-describedby="GitHubUrl-error" />
+            <span class="admin-field-error" asp-validation-for="GitHubUrl" id="GitHubUrl-error"></span>
+        </div>
+
+        <div class="admin-form-row">
+            <div class="admin-field">
+                <label class="admin-label" asp-for="DisplayOrder">Display order</label>
+                <input class="admin-input" asp-for="DisplayOrder" type="number" min="0" step="1"
+                       inputmode="numeric" aria-describedby="DisplayOrder-error" />
+                <span class="admin-field-error" asp-validation-for="DisplayOrder" id="DisplayOrder-error"></span>
+            </div>
+
+            <div class="admin-field admin-field--check">
+                <div class="admin-check">
+                    <input class="admin-checkbox" asp-for="IsPublished" aria-describedby="IsPublished-help" />
+                    <label class="admin-check-label" asp-for="IsPublished">Published</label>
+                </div>
+                <p class="admin-help" id="IsPublished-help">Visible on the public site.</p>
+            </div>
+        </div>
+
+        <div class="admin-form-actions">
+            <button type="submit" class="admin-btn admin-btn-primary">Save</button>
+            <a class="admin-btn admin-btn-outline" href="@cancelUrl">Cancel</a>
+        </div>
+    </form>
+</section>
