@@ -1,0 +1,55 @@
+@model PortfolioWebsite.Web.Models.HeroSectionViewModel
+
+@{
+    var profile = Model.Profile;
+    var labels = Model.ButtonLabels;
+}
+
+<div class="container hero-content">
+    <div class="row align-items-center g-5">
+        <div class="col-lg-7 order-2 order-lg-1 text-center text-lg-start">
+            <h1 id="home-title" class="hero-name">@profile.FullName</h1>
+            <p class="hero-designation">@profile.Designation</p>
+            <p class="hero-tagline">@profile.Tagline</p>
+
+            <div class="hero-actions">
+                @if (!string.IsNullOrWhiteSpace(profile.CvPath))
+                {
+                    <a class="btn btn-gradient" href="@profile.CvPath" download="@profile.CvDownloadName">
+                        <i class="bi bi-download" aria-hidden="true"></i>@labels.DownloadCv
+                    </a>
+                }
+                @if (!string.IsNullOrWhiteSpace(profile.GitHubUrl))
+                {
+                    <a class="btn btn-outline-site" href="@profile.GitHubUrl" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-github" aria-hidden="true"></i>@labels.GitHub
+                    </a>
+                }
+                @if (!string.IsNullOrWhiteSpace(profile.LinkedInUrl))
+                {
+                    <a class="btn btn-outline-site" href="@profile.LinkedInUrl" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-linkedin" aria-hidden="true"></i>@labels.LinkedIn
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-5 order-1 order-lg-2">
+            <div class="hero-photo-frame mx-auto">
+                <div class="hero-photo-inner">
+                    <span class="hero-photo-fallback" aria-hidden="true">RH</span>
+                    @if (!string.IsNullOrWhiteSpace(profile.PhotoPath))
+                    {
+                        <img class="hero-photo"
+                             src="@profile.PhotoPath"
+                             alt="@profile.PhotoAlt"
+                             width="320"
+                             height="320"
+                             decoding="async"
+                             data-profile-photo />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

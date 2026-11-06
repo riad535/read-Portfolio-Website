@@ -1,0 +1,50 @@
+@model PortfolioWebsite.Web.Models.ContactSectionViewModel
+
+@{
+    var profile = Model.Profile;
+    var labels = Model.ButtonLabels;
+}
+
+<div class="contact-card" data-reveal>
+    <div class="contact-card-inner">
+        @if (!string.IsNullOrWhiteSpace(profile.Email))
+        {
+            <a class="btn btn-gradient btn-lg" href="mailto:@profile.Email">
+                <i class="bi bi-envelope" aria-hidden="true"></i>@labels.SendEmail
+            </a>
+        }
+
+        <div class="contact-details">
+            @if (!string.IsNullOrWhiteSpace(profile.Phone))
+            {
+                <span class="contact-detail-item">
+                    <i class="bi bi-telephone" aria-hidden="true"></i>@profile.Phone
+                </span>
+            }
+            @if (!string.IsNullOrWhiteSpace(profile.Location))
+            {
+                <span class="contact-detail-item">
+                    <i class="bi bi-geo-alt" aria-hidden="true"></i>@profile.Location
+                </span>
+            }
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(profile.GitHubUrl) || !string.IsNullOrWhiteSpace(profile.LinkedInUrl))
+        {
+            <nav class="social-links" aria-label="Contact social links">
+                @if (!string.IsNullOrWhiteSpace(profile.GitHubUrl))
+                {
+                    <a class="icon-button" href="@profile.GitHubUrl" target="_blank" rel="noopener noreferrer" aria-label="@labels.GitHub">
+                        <i class="bi bi-github" aria-hidden="true"></i>
+                    </a>
+                }
+                @if (!string.IsNullOrWhiteSpace(profile.LinkedInUrl))
+                {
+                    <a class="icon-button" href="@profile.LinkedInUrl" target="_blank" rel="noopener noreferrer" aria-label="@labels.LinkedIn">
+                        <i class="bi bi-linkedin" aria-hidden="true"></i>
+                    </a>
+                }
+            </nav>
+        }
+    </div>
+</div>

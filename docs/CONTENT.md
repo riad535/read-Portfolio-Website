@@ -1,16 +1,33 @@
 # CONTENT.md
 
 Single source of truth for **all text and data** shown on the portfolio.
-`MockPortfolioService` must be filled from this file **exactly**. Do not rephrase, add or remove anything.
+Static sections are written into `StaticContentProvider`. Dynamic sections are loaded into SQL Server by `DbSeeder`. Both must be filled from this file **exactly**. Do not rephrase, add or remove anything.
+
+## Data Source Status (v2.0)
+
+| Section | Runtime source | Editable in admin panel |
+|---|---|---|
+| 1. Profile | `StaticContentProvider` (code) | No |
+| 2. Education | `StaticContentProvider` (code) | No |
+| 3. Skills | **SQL Server** (seeded from this file) | **Yes** |
+| 4. Projects | **SQL Server** (seeded from this file) | **Yes** |
+| 5. Certifications | `StaticContentProvider` (code) | No |
+| 6. Experience | **SQL Server** (seeded from this file) | **Yes** |
+| 7. Achievements | `StaticContentProvider` (code) | No |
+| 8-10. Labels, buttons, SEO | Code / views | No |
+
+For the three dynamic sections this file is **only the initial (seed) data**. After the first seed, the database is the live source and the admin panel changes it. Seeding runs only when the tables are empty.
 
 **Rules for agents**
 - `null` means **not provided yet**. Keep the model property `null` and **hide** the related UI element. Never invent a value.
 - Items marked `(proposed)` are drafts by the document author. Use them as written, the owner may edit them later.
-- Field names in backticks map to the properties of the view models in `docs/PRD.md` Section 8.4.
+- Field names in backticks map to the properties of the view models (static sections) or to the entities and columns in `docs/PRD.md` Section 9 (dynamic sections).
 
 ---
 
 ## 1. Profile (`ProfileViewModel`)
+
+**Static section** (code, not in the database, not editable in admin).
 
 | Field | Value |
 |---|---|
@@ -35,6 +52,8 @@ Dedicated Software Engineering student at Metropolitan University with a solid f
 
 ## 2. Education (`EducationViewModel`)
 
+**Static section** (code, not in the database, not editable in admin).
+
 | Field | Value |
 |---|---|
 | `Degree` | B.Sc. in Software Engineering |
@@ -44,24 +63,24 @@ Dedicated Software Engineering student at Metropolitan University with a solid f
 
 ---
 
-## 3. Skills (`SkillViewModel`)
+## 3. Skills (seed data for `SkillCategory` and `Skill`)
 
-Display in this order. Each category has a list of skills (one badge per item).
+**Dynamic section** (SQL Server, editable in admin). Each row is one `SkillCategories` record. `Name` maps to the category name, `IconClass` to a Bootstrap Icon, `DisplayOrder` to the `#` column. Each item in `Skills` becomes one `Skills` record; its `DisplayOrder` is its position in the list (starting at 1).
 
-| # | `Category` | `Skills` |
-|---|---|---|
-| 1 | Backend & Languages | C#, .NET Core, ASP.NET Core MVC, ASP.NET Web API, LINQ, C++, PHP (Laravel) |
-| 2 | Architecture & Patterns | Mediator Pattern, Repository Pattern, N-Tier Architecture, Clean Architecture, CQRS, RESTful API |
-| 3 | Database & ORM | SQL Server, Entity Framework Core, SQL Migrations |
-| 4 | Frontend & Mobile | React, JavaScript, HTML5, CSS3, Bootstrap, Flutter |
-| 5 | Tools & Environment | Visual Studio, VS Code, Git, GitHub, Windows CLI, Node.js, npm |
-| 6 | Problem Solving | Data Structures & Algorithms, Competitive Programming |
+| # (`DisplayOrder`) | `Name` | `IconClass` | `Skills` |
+|---|---|---|---|
+| 1 | Backend & Languages | bi-code-slash | C#, .NET Core, ASP.NET Core MVC, ASP.NET Web API, LINQ, C++, PHP (Laravel) |
+| 2 | Architecture & Patterns | bi-diagram-3 | Mediator Pattern, Repository Pattern, N-Tier Architecture, Clean Architecture, CQRS, RESTful API |
+| 3 | Database & ORM | bi-database | SQL Server, Entity Framework Core, SQL Migrations |
+| 4 | Frontend & Mobile | bi-phone | React, JavaScript, HTML5, CSS3, Bootstrap, Flutter |
+| 5 | Tools & Environment | bi-tools | Visual Studio, VS Code, Git, GitHub, Windows CLI, Node.js, npm |
+| 6 | Problem Solving | bi-puzzle | Data Structures & Algorithms, Competitive Programming |
 
 ---
 
-## 4. Projects (`ProjectViewModel`)
+## 4. Projects (seed data for `Project`)
 
-Display in this order.
+**Dynamic section** (SQL Server, editable in admin). `DisplayOrder` and `IsPublished` are database fields added for the admin panel. Public site shows only `IsPublished = true`, ordered by `DisplayOrder`.
 
 ### 4.1 MaleFashion E-Commerce Platform
 
@@ -73,6 +92,8 @@ Display in this order.
 | `Architecture` | Clean Architecture, Mediator, Repository Pattern, CQRS Pattern |
 | `LiveDemoUrl` | https://malefashion001-001-site1.ftempurl.com/ |
 | `GitHubUrl` | null |
+| `DisplayOrder` | 1 |
+| `IsPublished` | true |
 
 ### 4.2 Blood Donation Management System
 
@@ -84,10 +105,14 @@ Display in this order.
 | `Architecture` | null |
 | `LiveDemoUrl` | null |
 | `GitHubUrl` | null |
+| `DisplayOrder` | 2 |
+| `IsPublished` | true |
 
 ---
 
 ## 5. Certifications (`CertificationViewModel`)
+
+**Static section** (code, not in the database, not editable in admin).
 
 | # | `CourseName` | `Platform` | `VerificationUrl` |
 |---|---|---|---|
@@ -96,9 +121,11 @@ Display in this order.
 
 ---
 
-## 6. Experience (`ExperienceViewModel`)
+## 6. Experience (seed data for `Experience` and `ExperiencePoint`)
 
-Display newest first.
+**Dynamic section** (SQL Server, editable in admin). Dates are stored with month precision (first day of the month). The public site orders current roles first, then by `StartDate` descending, and shows only `IsPublished = true`.
+
+Date text on the site is **generated** as `MMM yyyy - MMM yyyy`, or `MMM yyyy - Present` for a current role. Because of this, "Sept 2025" in the original text is displayed as **Sep 2025** (accepted).
 
 ### 6.1 Programming Mentor
 
@@ -106,9 +133,13 @@ Display newest first.
 |---|---|
 | `Role` | Programming Mentor |
 | `Organisation` | MU Programming Olympiad & ACM Workshop |
-| `DateRange` | Aug 2023 - Present |
+| `StartDate` | 2023-08 |
+| `EndDate` | null |
+| `IsCurrent` | true |
+| `IsPublished` | true |
+| Displayed as | Aug 2023 - Present |
 
-`Points`
+`Points` (stored as `ExperiencePoint` rows, `DisplayOrder` = position starting at 1)
 - Actively engaged in content creation, problem design, and mentoring students in C++ and Competitive Programming algorithms.
 
 ### 6.2 Laravel Backend Developer Intern
@@ -117,9 +148,13 @@ Display newest first.
 |---|---|
 | `Role` | Laravel Backend Developer Intern |
 | `Organisation` | RootSoft IT |
-| `DateRange` | Sept 2025 - Nov 2025 |
+| `StartDate` | 2025-09 |
+| `EndDate` | 2025-11 |
+| `IsCurrent` | false |
+| `IsPublished` | true |
+| Displayed as | Sep 2025 - Nov 2025 |
 
-`Points`
+`Points` (stored as `ExperiencePoint` rows, `DisplayOrder` = position starting at 1)
 - Engineered relational database models using SQL and PHP/Laravel.
 - Developed optimized API endpoints for internal web services.
 
@@ -127,7 +162,7 @@ Display newest first.
 
 ## 7. Achievements (`AchievementViewModel`)
 
-Display newest first.
+**Static section** (code, not in the database, not editable in admin). Display newest first.
 
 | # | `Title` | `Year` |
 |---|---|---|
@@ -138,6 +173,8 @@ Display newest first.
 ---
 
 ## 8. Section Headings and Navbar Labels
+
+If a dynamic section (Skills, Projects, Experience) has no visible items, hide the section **and** its navbar link.
 
 Use these exact labels for navbar links and section titles. The `id` is the HTML anchor.
 
@@ -184,9 +221,22 @@ Use these exact labels for navbar links and section titles. The `id` is the HTML
 
 ---
 
-## 11. Open Items (`null` values to be filled by the owner)
+## 11. Admin Account (not stored here)
+
+The admin email and password are **not** part of this file and must never be committed. They are supplied through configuration:
+
+| Key | Local | Production |
+|---|---|---|
+| `Admin:Email` | `dotnet user-secrets` | Environment variable `Admin__Email` |
+| `Admin:Password` | `dotnet user-secrets` | Environment variable `Admin__Password` (first start only) |
+
+---
+
+## 12. Open Items (`null` values to be filled by the owner)
 
 - Education `Period` and `Cgpa`
 - Certificate #2 `VerificationUrl`
 - MaleFashion `GitHubUrl`
 - Blood Donation `Architecture`, `LiveDemoUrl`, `GitHubUrl`
+
+(Project values can be filled later through the admin panel. Update this file as well if you want a fresh seed to match.)

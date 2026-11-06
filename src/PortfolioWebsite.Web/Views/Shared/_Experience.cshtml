@@ -1,0 +1,23 @@
+@model List<PortfolioWebsite.Web.Models.ExperienceViewModel>
+
+<div class="timeline">
+    @foreach (var experience in Model)
+    {
+        <article class="timeline-item" data-reveal>
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="surface-card timeline-card">
+                <div class="timeline-header">
+                    <h3 class="card-title-site">@experience.Role</h3>
+                    <span class="timeline-date">@experience.DateRange</span>
+                </div>
+                <p class="timeline-organisation">@experience.Organisation</p>
+                <ul class="timeline-points">
+                    @foreach (var point in experience.Points)
+                    {
+                        <li>@point</li>
+                    }
+                </ul>
+            </div>
+        </article>
+    }
+</div>

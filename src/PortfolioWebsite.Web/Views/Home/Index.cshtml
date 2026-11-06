@@ -1,0 +1,113 @@
+@model PortfolioWebsite.Web.Models.PortfolioViewModel
+
+@{
+    var navigation = Model.Navigation.ToDictionary(item => item.AnchorId);
+    var homeNav = navigation["home"];
+    var aboutNav = navigation["about"];
+    var educationNav = navigation["education"];
+    var certificationsNav = navigation["certifications"];
+    var achievementsNav = navigation["achievements"];
+    var contactNav = navigation["contact"];
+
+    navigation.TryGetValue("skills", out var skillsNav);
+    navigation.TryGetValue("projects", out var projectsNav);
+    navigation.TryGetValue("experience", out var experienceNav);
+
+    var heroSection = new HeroSectionViewModel
+    {
+        Profile = Model.Profile,
+        ButtonLabels = Model.ButtonLabels
+    };
+    var projectsSection = new ProjectsSectionViewModel
+    {
+        Projects = Model.Projects,
+        ButtonLabels = Model.ButtonLabels
+    };
+    var certificationsSection = new CertificationsSectionViewModel
+    {
+        Certifications = Model.Certifications,
+        ButtonLabels = Model.ButtonLabels
+    };
+    var contactSection = new ContactSectionViewModel
+    {
+        Profile = Model.Profile,
+        ButtonLabels = Model.ButtonLabels
+    };
+}
+
+<section id="@homeNav.AnchorId" class="hero-section" aria-labelledby="home-title">
+    <partial name="_Hero" model="heroSection" />
+</section>
+
+<section id="@aboutNav.AnchorId" class="portfolio-section section-alt"
+         aria-labelledby="@(aboutNav.AnchorId + "-title")" data-reveal>
+    <div class="container">
+        <partial name="_SectionHeading" model="aboutNav" />
+        <partial name="_About" model="Model.Profile" />
+    </div>
+</section>
+
+<section id="@educationNav.AnchorId" class="portfolio-section"
+         aria-labelledby="@(educationNav.AnchorId + "-title")" data-reveal>
+    <div class="container">
+        <partial name="_SectionHeading" model="educationNav" />
+        <partial name="_Education" model="Model.Education" />
+    </div>
+</section>
+
+@if (skillsNav is not null && Model.Skills.Count > 0)
+{
+    <section id="@skillsNav.AnchorId" class="portfolio-section section-alt"
+             aria-labelledby="@(skillsNav.AnchorId + "-title")" data-reveal>
+        <div class="container">
+            <partial name="_SectionHeading" model="skillsNav" />
+            <partial name="_Skills" model="Model.Skills" />
+        </div>
+    </section>
+}
+
+@if (projectsNav is not null && Model.Projects.Count > 0)
+{
+    <section id="@projectsNav.AnchorId" class="portfolio-section"
+             aria-labelledby="@(projectsNav.AnchorId + "-title")" data-reveal>
+        <div class="container">
+            <partial name="_SectionHeading" model="projectsNav" />
+            <partial name="_Projects" model="projectsSection" />
+        </div>
+    </section>
+}
+
+<section id="@certificationsNav.AnchorId" class="portfolio-section section-alt"
+         aria-labelledby="@(certificationsNav.AnchorId + "-title")" data-reveal>
+    <div class="container">
+        <partial name="_SectionHeading" model="certificationsNav" />
+        <partial name="_Certifications" model="certificationsSection" />
+    </div>
+</section>
+
+@if (experienceNav is not null && Model.Experiences.Count > 0)
+{
+    <section id="@experienceNav.AnchorId" class="portfolio-section"
+             aria-labelledby="@(experienceNav.AnchorId + "-title")" data-reveal>
+        <div class="container">
+            <partial name="_SectionHeading" model="experienceNav" />
+            <partial name="_Experience" model="Model.Experiences" />
+        </div>
+    </section>
+}
+
+<section id="@achievementsNav.AnchorId" class="portfolio-section section-alt"
+         aria-labelledby="@(achievementsNav.AnchorId + "-title")" data-reveal>
+    <div class="container">
+        <partial name="_SectionHeading" model="achievementsNav" />
+        <partial name="_Achievements" model="Model.Achievements" />
+    </div>
+</section>
+
+<section id="@contactNav.AnchorId" class="portfolio-section section-alt"
+         aria-labelledby="@(contactNav.AnchorId + "-title")" data-reveal>
+    <div class="container">
+        <partial name="_SectionHeading" model="contactNav" />
+        <partial name="_Contact" model="contactSection" />
+    </div>
+</section>
