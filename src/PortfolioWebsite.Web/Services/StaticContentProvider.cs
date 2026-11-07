@@ -10,6 +10,9 @@ public class StaticContentProvider : IStaticContentProvider
         {
             PageTitle = "Md Read Hasan - .NET Backend Developer Portfolio",
             MetaDescription = "Portfolio of Md Read Hasan, a Software Engineering student and C#/.NET backend developer. Projects, skills, certifications and contact details.",
+            OgTitle = "Md Read Hasan - .NET Backend Developer Portfolio",
+            OgDescription = "C#, .NET Core and clean architecture projects by Md Read Hasan.",
+            OgImagePath = "/images/profile.jpg",
             FooterText = "(c) {current year} Md Read Hasan. All rights reserved.",
             Profile = CreateProfile(),
             Education = CreateEducation(),

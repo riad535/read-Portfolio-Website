@@ -341,26 +341,27 @@ These are outside the agent's control. The agent should only report if they are 
 **Goal:** the admin is safe and tested. (AC-18, AC-19, AC-21)
 
 **Hardening**
-- [ ] Security headers middleware: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY` (admin area)
-- [ ] Friendly error handling for admin (no stack traces in production); log failed logins without passwords
-- [ ] Review: no `Html.Raw` on database content; no GET endpoint changes state; all admin controllers have `[Authorize]`
-- [ ] Secret scan: no passwords or production connection strings in tracked files (`git grep -i password`, check history of this branch)
-- [ ] Confirm `appsettings.Production.json` is ignored by Git
-- [ ] Confirm production never auto-migrates (Development only)
+- [x] Security headers middleware: `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY` (admin area)
+- [x] Friendly error handling for admin (no stack traces in production); log failed logins without passwords
+- [x] Review: no `Html.Raw` on database content; no GET endpoint changes state; all admin controllers have `[Authorize]`
+- [x] Secret scan: no passwords or production connection strings in tracked files (`git grep -i password`, check history of this branch)
+- [x] Confirm `appsettings.Production.json` is ignored by Git
+- [x] Confirm production never auto-migrates (Development only)
 
 **Tests** (`tests/PortfolioWebsite.Application.Tests`, xUnit, plain asserts, no FluentAssertions/Moq)
-- [ ] Add test project and references (Application, Domain, Infrastructure); EF InMemory or SQLite in-memory
-- [ ] Validator tests for SkillCategory, Project, Experience rules in `PRD §10`
-- [ ] Handler tests: create, update, delete for each feature; unique name rule; update replaces skills/points
-- [ ] Query tests: public queries hide unpublished items and order correctly; experience date text format
+- [x] Add test project and references (Application, Domain, Infrastructure); EF InMemory or SQLite in-memory
+- [x] Validator tests for SkillCategory, Project, Experience rules in `PRD §10`
+- [x] Handler tests: create, update, delete for each feature; unique name rule; update replaces skills/points
+- [x] Query tests: public queries hide unpublished items and order correctly; experience date text format
 
 **Merge**
-- [ ] `dotnet build PortfolioWebsite.sln` and `dotnet test` pass
+- [x] `dotnet build PortfolioWebsite.sln` and `dotnet test` pass
 - [ ] Owner reviews and approves, then merges `feature/admin` into `main`
 
 **Verify**
-- [ ] AC-18 and AC-19 confirmed
-- [ ] AC-21: `dotnet test` passes
+- [ ] AC-18 confirmed (owner verification)
+- [x] AC-19 confirmed
+- [x] AC-21: `dotnet test` passes
 
 ---
 
@@ -368,22 +369,25 @@ These are outside the agent's control. The agent should only report if they are 
 
 **Goal:** AC-06, AC-07, AC-20 pass. Run this on the finished site including the admin exclusions.
 
-- [ ] Unique `<title>` and meta description in the public layout (values in `CONTENT.md §10`)
-- [ ] Open Graph tags: `og:title`, `og:description`, `og:image`, `og:url`
-- [ ] `robots.txt` (with `Disallow: /admin`) and `sitemap.xml` (public page only) in `wwwroot/`
-- [ ] Confirm admin pages have `noindex` and are not in the sitemap (AC-20)
-- [ ] Favicon added
-- [ ] Semantic HTML audit: one `h1`, sections use `section`, landmarks present
-- [ ] Alt text on all images; `aria-label` on icon-only links
-- [ ] Colour contrast meets WCAG AA; visible keyboard focus on links and buttons
+- [x] Unique `<title>` and meta description in the public layout (values in `CONTENT.md §10`)
+- [x] Open Graph tags: `og:title`, `og:description`, `og:image`, `og:url`
+- [x] `robots.txt` (with `Disallow: /admin`) and `sitemap.xml` (public page only) in `wwwroot/`
+      (sitemap is served dynamically at `/sitemap.xml` so absolute URLs use the live host; the production domain is still TBD)
+- [x] Confirm admin pages have `noindex` and are not in the sitemap (AC-20)
+- [x] Favicon added
+- [x] Semantic HTML audit: one `h1`, sections use `section`, landmarks present
+- [x] Alt text on all images; `aria-label` on icon-only links
+- [x] Colour contrast meets WCAG AA; visible keyboard focus on links and buttons
 - [ ] Performance: minify CSS/JS for production, static file caching, lazy-load below-the-fold images; public page runs a small number of DB queries (one per dynamic section, `AsNoTracking`)
-- [ ] Custom 404 page (FR-16) and error page
-- [ ] HTTPS redirection and HSTS configured for production
-- [ ] Remove unused default files, scripts and styles
+      (caching, lazy-loading and query counts verified; production minification of custom CSS/JS is still pending)
+- [x] Custom 404 page (FR-16) and error page
+- [x] HTTPS redirection and HSTS configured for production
+- [x] Remove unused default files, scripts and styles
 
 **Verify**
 - [ ] Lighthouse (Chrome DevTools) on the public page: 90+ in Performance, Accessibility, Best Practices, SEO
-- [ ] Title, meta description, Open Graph tags present in page source
+      (not run automatically; requires a manual Chrome DevTools session)
+- [x] Title, meta description, Open Graph tags present in page source
 
 ---
 

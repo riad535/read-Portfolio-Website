@@ -14,13 +14,16 @@ public sealed class AccountController : Controller
 
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly ILogger<AccountController> _logger;
 
     public AccountController(
         SignInManager<IdentityUser> signInManager,
-        UserManager<IdentityUser> userManager)
+        UserManager<IdentityUser> userManager,
+        ILogger<AccountController> logger)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _logger = logger;
     }
 
     [HttpGet("admin/login")]
@@ -44,6 +47,7 @@ public sealed class AccountController : Controller
 
         if (user is null)
         {
+            LogLoginFailure("FailedLogin");
             ModelState.AddModelError(string.Empty, InvalidCredentialsMessage);
             return View(model);
         }
@@ -64,6 +68,8 @@ public sealed class AccountController : Controller
             return RedirectToAction("Index", "Dashboard");
         }
 
+        LogLoginFailure(result.IsLockedOut ? "Lockout" : "FailedLogin");
+
         ModelState.AddModelError(
             string.Empty,
             result.IsLockedOut ? LockedOutMessage : InvalidCredentialsMessage);
@@ -78,5 +84,15 @@ public sealed class AccountController : Controller
         await _signInManager.SignOutAsync();
 
         return RedirectToAction(nameof(Login));
+    }
+
+    private void LogLoginFailure(string eventType)
+    {
+        var clientIp = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+        _logger.LogWarning(
+            "Admin login rejected. EventType: {EventType}. ClientIp: {ClientIp}",
+            eventType,
+            clientIp);
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PortfolioWebsite.Application.Common.Interfaces;
 using PortfolioWebsite.Infrastructure.Persistence;
 using PortfolioWebsite.Infrastructure.Persistence.Seed;
@@ -48,18 +49,52 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Applies pending migrations and seeds initial content. Development only.
+    /// Initializes the database. Migrations are applied only when <paramref name="applyMigrations"/>
+    /// is true (Development). In Production the initializer never migrates: it seeds only when the
+    /// database is reachable and has no pending migrations. Production failures are logged and
+    /// seeding is skipped so the application keeps running.
     /// </summary>
     public static async Task InitializeInfrastructureAsync(
         this IServiceProvider services,
+        bool applyMigrations,
         CancellationToken cancellationToken = default)
     {
         using var scope = services.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var logger = scope.ServiceProvider
+            .GetRequiredService<ILoggerFactory>()
+            .CreateLogger("PortfolioWebsite.Infrastructure.DatabaseInitialization");
 
-        await context.Database.MigrateAsync(cancellationToken);
+        try
+        {
+            var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-        await seeder.SeedAsync(cancellationToken);
+            if (applyMigrations)
+            {
+                await context.Database.MigrateAsync(cancellationToken);
+            }
+            else
+            {
+                var pendingMigrations = await context.Database
+                    .GetPendingMigrationsAsync(cancellationToken);
+
+                if (pendingMigrations.Any())
+                {
+                    logger.LogError(
+                        "Database seeding was skipped because migrations are pending. " +
+                        "Apply the migration script before starting the application.");
+                    return;
+                }
+            }
+
+            var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+            await seeder.SeedAsync(cancellationToken);
+        }
+        catch (Exception exception) when (!applyMigrations)
+        {
+            logger.LogError(
+                exception,
+                "Database seeding was skipped because the database could not be reached. " +
+                "The application will continue to run without seeding.");
+        }
     }
 }

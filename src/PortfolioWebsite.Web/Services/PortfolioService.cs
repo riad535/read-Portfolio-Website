@@ -69,6 +69,9 @@ public class PortfolioService : IPortfolioService
         {
             PageTitle = staticContent.PageTitle,
             MetaDescription = staticContent.MetaDescription,
+            OgTitle = staticContent.OgTitle,
+            OgDescription = staticContent.OgDescription,
+            OgImagePath = staticContent.OgImagePath,
             FooterText = staticContent.FooterText,
             Profile = staticContent.Profile,
             Education = staticContent.Education,

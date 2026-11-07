@@ -1,0 +1,12 @@
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="admin-card admin-empty">
+    <i class="bi bi-exclamation-triangle admin-empty-icon" aria-hidden="true"></i>
+    <h2 class="admin-card-title">Something went wrong</h2>
+    <p class="admin-empty-text">The request could not be completed. Please try again.</p>
+    <a class="admin-btn admin-btn-primary" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+        Back to dashboard
+    </a>
+</section>

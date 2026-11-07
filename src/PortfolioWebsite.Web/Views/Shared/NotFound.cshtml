@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Page Not Found";
+}
+
+<section class="portfolio-section" aria-labelledby="not-found-title">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="surface-card text-center">
+                    <div class="icon-box icon-box-center">
+                        <i class="bi bi-compass" aria-hidden="true"></i>
+                    </div>
+                    <h1 id="not-found-title" class="section-title">Page not found</h1>
+                    <p class="about-bio">
+                        The page you are looking for does not exist or has moved.
+                    </p>
+                    <div class="hero-actions justify-content-center">
+                        <a class="btn btn-gradient" asp-controller="Home" asp-action="Index">
+                            <i class="bi bi-house" aria-hidden="true"></i>Back to home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

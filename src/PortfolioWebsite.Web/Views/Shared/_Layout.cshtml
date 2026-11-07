@@ -1,11 +1,21 @@
-﻿@{
+@{
     var brandName = ViewData["BrandName"] as string;
     var navigation = ViewData["Navigation"] as List<NavigationItemViewModel> ?? [];
     var buttonLabels = ViewData["ButtonLabels"] as ButtonLabelsViewModel;
     var gitHubUrl = ViewData["GitHubUrl"] as string;
     var linkedInUrl = ViewData["LinkedInUrl"] as string;
     var footerText = ViewData["FooterText"] as string;
+    var pageTitle = ViewData["Title"] as string;
     var metaDescription = ViewData["MetaDescription"] as string;
+    var canonicalUrl = ViewData["CanonicalUrl"] as string;
+    var ogTitle = ViewData["OgTitle"] as string;
+    var ogDescription = ViewData["OgDescription"] as string;
+    var ogImageUrl = ViewData["OgImageUrl"] as string;
+    var robotsNoIndex = ViewData["RobotsNoIndex"] as bool? == true;
+    var isHomePage = ViewData["IsHomePage"] as bool? == true;
+    var homePath = Url.Action("Index", "Home") ?? "/";
+    var resolvedOgTitle = string.IsNullOrWhiteSpace(ogTitle) ? pageTitle : ogTitle;
+    var resolvedOgDescription = string.IsNullOrWhiteSpace(ogDescription) ? metaDescription : ogDescription;
 
     if (!string.IsNullOrWhiteSpace(footerText))
     {
@@ -17,25 +27,57 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@pageTitle</title>
     @if (!string.IsNullOrWhiteSpace(metaDescription))
     {
         <meta name="description" content="@metaDescription" />
     }
+    @if (robotsNoIndex)
+    {
+        <meta name="robots" content="noindex, nofollow" />
+    }
+    @if (!string.IsNullOrWhiteSpace(canonicalUrl))
+    {
+        <link rel="canonical" href="@canonicalUrl" />
+        <meta property="og:type" content="website" />
+        @if (!string.IsNullOrWhiteSpace(resolvedOgTitle))
+        {
+            <meta property="og:title" content="@resolvedOgTitle" />
+        }
+        @if (!string.IsNullOrWhiteSpace(resolvedOgDescription))
+        {
+            <meta property="og:description" content="@resolvedOgDescription" />
+        }
+        @if (!string.IsNullOrWhiteSpace(ogImageUrl))
+        {
+            <meta property="og:image" content="@ogImageUrl" />
+            <meta property="og:image:width" content="600" />
+            <meta property="og:image:height" content="600" />
+        }
+        <meta property="og:url" content="@canonicalUrl" />
+        @if (!string.IsNullOrWhiteSpace(brandName))
+        {
+            <meta property="og:site_name" content="@brandName" />
+        }
+    }
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon" sizes="any" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
     <header class="site-header">
         <nav class="navbar navbar-expand-xl site-navbar sticky-top" id="siteNavbar" aria-label="Main">
             <div class="container">
                 @if (!string.IsNullOrWhiteSpace(brandName))
                 {
-                    <a class="navbar-brand" href="#home">
+                    <a class="navbar-brand" href="@(isHomePage ? "#home" : homePath)">
                         <span class="brand-dot" aria-hidden="true"></span>@brandName
                     </a>
                 }
@@ -54,7 +96,7 @@
                             @foreach (var item in navigation)
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#@item.AnchorId" data-nav-link>@item.NavbarLabel</a>
+                                    <a class="nav-link" href="@(isHomePage ? $"#{item.AnchorId}" : $"{homePath}#{item.AnchorId}")" data-nav-link>@item.NavbarLabel</a>
                                 </li>
                             }
                         </ul>
@@ -64,7 +106,7 @@
         </nav>
     </header>
 
-    <main id="main-content" class="site-main">
+    <main id="main-content" class="site-main" tabindex="-1">
         @RenderBody()
     </main>
 
@@ -98,8 +140,8 @@
         <i class="bi bi-arrow-up" aria-hidden="true"></i>
     </button>
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="~/js/site.js" asp-append-version="true" defer></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

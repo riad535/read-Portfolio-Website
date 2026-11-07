@@ -120,6 +120,22 @@ img {
   counter-reset: section;
 }
 
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 1050;
+  padding: 0.75rem 1rem;
+  color: var(--on-accent);
+  background-color: var(--accent);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
 /* Navbar */
 .site-navbar {
   min-height: 72px;

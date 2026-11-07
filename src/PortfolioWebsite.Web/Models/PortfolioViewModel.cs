@@ -6,6 +6,12 @@ public class PortfolioViewModel
 
     public string MetaDescription { get; init; } = string.Empty;
 
+    public string OgTitle { get; init; } = string.Empty;
+
+    public string OgDescription { get; init; } = string.Empty;
+
+    public string OgImagePath { get; init; } = string.Empty;
+
     public string FooterText { get; init; } = string.Empty;
 
     public ProfileViewModel Profile { get; init; } = new();
